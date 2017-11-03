@@ -42,9 +42,25 @@ plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), c
 
 # Code for the second plot with varying carrying capacities 
 
-# Code for thirst plot with varying initial population size
-
-
+# Code for the third plot with varying intial population sizes
+# Define parameters
+# params=(r, K)
+params_prob3=(.1,50)
+#define intial population sizes
+N0_pop1=[10]
+N0_pop2=[50]
+N0_pop3=[100]
+#define time interval
+times=range(0,175)
+##### Simulate the model using odeint and different values for N0
+N0_pop1_sim=spint.odeint(func=logGrowth, y0=N0_pop1, t=times, args=params_prob3)
+N0_pop2_sim=spint.odeint(func=logGrowth, y0=N0_pop2, t=times, args=params_prob3)
+N0_pop3_sim=spint.odeint(func=logGrowth, y0=N0_pop3, t=times, args=params_prob3)
+#### Put model outputs in output table
+N0_df=pandas.DataFrame({"t": times, "P1": N0_pop1_sim[:,0], "P2": N0_pop2_sim[:,0], "P3": N0_pop3_sim[:,0]})
+### Plot simulation output
+plot3=ggplot(N0_df, aes(x="t", y="P1"))+geom_line(color='mediumblue')+theme_classic()+ylab("Population Size (N)")+xlab("Time")
+plot3+geom_line(aes(x="t",y="P2"),color='deeppink')+geom_line(aes(x="t",y="P3"),color='darkorchid')
 
 
 ##### Question 2
@@ -75,4 +91,7 @@ for i in range(0, len(betas)):
     params=(betas[i], gammas[i])
     sim=spint.odeint(func=SIRmodel, y0=N0, t=times, args=params)
     out_SIR.iloc[:,i]=sim[:,0]
+
+
+
 
