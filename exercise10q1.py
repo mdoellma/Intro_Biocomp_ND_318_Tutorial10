@@ -4,8 +4,15 @@ Authors: Grant Keller and Kathleen Nicholson
 
 ## Module description
 """
-
-
+# list of r-values
+rs=[-0.1,0.1,0.4,0.8,1.0]
+# make Df to store results. Needs column for time and each r. 
+storage=pandas.DataFrame({"time":times,"r1":0,"r2":0,"r3":0,"r4":0,"r5":0})
+# Write a for loop to evaluate model at each r. 
+for i in range(0,len(rs)):
+    params=(rs[i],K)
+    sim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+    Q1A.iloc[:,i]=sim[:,0]
 
 
 if __name__ == '__main__':
