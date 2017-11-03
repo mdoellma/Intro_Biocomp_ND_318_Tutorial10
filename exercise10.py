@@ -42,7 +42,7 @@ plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), c
 
 # Code for the second plot with varying carrying capacities 
 
-# Code for thirst plot with varying initial population size
+# Code for third plot with varying initial population size
 
 
 
