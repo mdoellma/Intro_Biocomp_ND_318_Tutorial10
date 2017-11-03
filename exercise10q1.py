@@ -4,6 +4,7 @@ Authors: Grant Keller and Kathleen Nicholson
 
 ## Module description
 """
+<<<<<<< HEAD
 
 import pandas
 from scipy.integrate import odeint as oi
