@@ -1,0 +1,20 @@
+#Problem 1
+
+#load packages
+import numpy
+import pandas
+import scipy
+import scipy.integrate as spint
+from scipy.stats import norm
+from scipy.optimize import minimize
+from scipy.stats import chi2
+from plotnine import *
+
+#A - different r values
+
+#B - different K values
+
+#C - different N values
+
+
+#Problem 2
