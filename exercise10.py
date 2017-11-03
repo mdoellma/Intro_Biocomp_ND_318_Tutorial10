@@ -40,4 +40,39 @@ plot1=ggplot(out_df, aes(x="t", y="N1"))+geom_line()+theme_classic()+ylab("Popul
 plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), color="green")+geom_line(aes(x="t", y="N4"), color="blue")+geom_line(aes(x="t", y="N5"), color="orange")
 
 
+# Code for the second plot with varying carrying capacities 
+
+# Code for thirst plot with varying initial population size
+
+
+
+
+##### Question 2
+
+# Write custom function for SIR model
+def SIRmodel(y, t0, beta, gamma):
+    S=y[0]
+    I=y[1]
+    R=y[2]
+    
+    dSdt=-beta*I*S
+    dIdt=beta*I*S-gamma*I
+    dRdt=gamma*I
+    
+    return [dSdt, dIdt, dRdt]
+
+# Create empty storage and lists to loop over in for loop
+out_SIR=pandas.DataFrame({"t": times, "p1": 0, "p2": 0,"p3": 0,"p4": 0,"p4": 0,"p6": 0,"p7": 0})
+betas=[0.0005, 0.005, 0.0001, 0.00005, 0.0001, 0.0002, 0.0001]
+gammas=[0.05, 0.5, 0.1, 0.1, 0.05, 0.05, 0.06]
+
+### Simulate output with different betas and gammas
+times=range(0,500) #run simulation for 500 days
+N0=[999, 1, 0] #initially we have 999 susceptible, 1 infected, and 0 resistent
+
+i=0
+for i in range(0, len(betas)):
+    params=(betas[i], gammas[i])
+    sim=spint.odeint(func=SIRmodel, y0=N0, t=times, args=params)
+    out_SIR.iloc[:,i]=sim[:,0]
 
