@@ -4,7 +4,14 @@ Authors: Grant Keller and Kathleen Nicholson
 
 ## Module description
 """
-
+def simSIR():
+    """
+    Function descriptor.
+    
+    State: S, I, R
+    Param: B
+    """
+    
 
 if __name__ == '__main__':
     pass
