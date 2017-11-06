@@ -33,7 +33,7 @@ for i, r in enumerate(rs):
     sim = spint.odeint(func=ddSim, y0=N0, t=times,args=params)
     QIA.iloc[:, i] = sim[:, 0]
 print ggplot(aes(x='times'), data=QIA) +\
-    xlab("time")+ylab("capacity") +\
+    xlab("time")+ylab("population size") +\
     geom_line(aes(y='r1'), color='blue') +\
     geom_line(aes(y='r2'), color='red') +\
     geom_line(aes(y='r3'), color='green') +\
@@ -58,7 +58,7 @@ def ddSim (y,t,r,K):
 # define initial values (these don't change), state variables, time steps, params (that aren't changing)
 # ex. define initial val (N), time steps, param(k)
 r=0.2
-N0=[1]
+N0=1
 times=range(0,500)
 # list of K-values
 Ks=[10,50,100]
@@ -66,11 +66,11 @@ Ks=[10,50,100]
 Q1B=pandas.DataFrame({"times":times,"K1":0,"K2":0,"K3":0})
 # Write a for loop to evaluate model at each K. 
 for i in range(0,len(Ks)):
-    params=(Ks[i],r)
+    params=(r,Ks[i])
     sim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
     Q1B.iloc[:,i]=sim[:,0]
 print ggplot(aes(x='times'), data=Q1B) +\
-    xlab("time")+ylab("capacity") +\
+    xlab("time")+ylab("population size") +\
     geom_line(aes(y='K1'), color='blue') +\
     geom_line(aes(y='K2'), color='red') +\
     geom_line(aes(y='K3'), color='green') 
@@ -101,7 +101,7 @@ Ns=[1,50,100]
 Q1C=pandas.DataFrame({"times":times,"N1":0,"N2":0,"N3":0})
 # Write a for loop to evaluate model at each N. 
 for i in range(0,len(Ns)):
-    params=(Ns[i],r)
+    params=(r,Ns[i])
     sim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
     Q1C.iloc[:,i]=sim[:,0]
     
