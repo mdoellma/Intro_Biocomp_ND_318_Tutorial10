@@ -33,7 +33,7 @@ for i, r in enumerate(rs):
     sim = spint.odeint(func=ddSim, y0=N0, t=times,args=params)
     QIA.iloc[:, i] = sim[:, 0]
 print ggplot(aes(x='times'), data=QIA) +\
-    xlab("time")+ylab("population size") +\
+    labs(title= "population size over time", x="time", y="population size") +\
     geom_line(aes(y='r1'), color='blue') +\
     geom_line(aes(y='r2'), color='red') +\
     geom_line(aes(y='r3'), color='green') +\
@@ -69,11 +69,13 @@ for i in range(0,len(Ks)):
     params=(r,Ks[i])
     sim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
     Q1B.iloc[:,i]=sim[:,0]
-print ggplot(aes(x='times'), data=Q1B) +\
-    xlab("time")+ylab("population size") +\
+print ggplot(aes(x='times', color='K'), data=Q1B) +\
+    labs(title= "population size over time", x="time", y="population size") +\
     geom_line(aes(y='K1'), color='blue') +\
     geom_line(aes(y='K2'), color='red') +\
-    geom_line(aes(y='K3'), color='green') 
+    geom_line(aes(y='K3'), color='green')
+
+    
 
 
 
@@ -106,7 +108,7 @@ for i in range(0,len(Ns)):
     Q1C.iloc[:,i]=sim[:,0]
     
 print ggplot(aes(x='times'), data=Q1C) +\
-    xlab("time")+ylab("population size") +\
+    labs(title= "population size over time", x="time", y="population size") +\
     geom_line(aes(y='N1'), color='blue') +\
     geom_line(aes(y='N2'), color='yellow') +\
     geom_line(aes(y='N3'), color='green') 
