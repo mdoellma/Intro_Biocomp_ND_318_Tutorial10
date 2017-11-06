@@ -61,7 +61,6 @@ def modelDDSim (N_arr, times, r_arr, K_arr):
         plot = plot + geom_line(aes(x="time", y=col_name), color=colors[i])
     return plot
 
-
 #Results:
 #Make plot for separate R values
 modelDDSim([10], range(0,100), [-0.1, 0.1, 0.4, 0.8, 1], [100])
@@ -71,9 +70,10 @@ modelDDSim([10], range(0,100), [0.2], [1, 50, 100])
 modelDDSim([1, 5, 100], range(0,100), [0.2], [1, 50, 100])
 
 
-
 ### --- End Challenge 1---------------------------------------
+
 ### --- Begin challenge 2-------------------------------------
+
 #state=I/S=state params=r/B
 #basic reproduction only initial values
 
