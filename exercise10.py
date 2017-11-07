@@ -158,11 +158,9 @@ for i in range(0,7):
     brnlist.append(brn)
     
 F=list(range(0,7,1))
-G=pandas.DataFrame(numpy.column_stack([F,inclist,prevlist,percafflist,brnlist]),columns=['Simulation','Max Prevalence','Percent Affected','Basic Reproduction #'])
-Results=
+Results=pandas.DataFrame(numpy.column_stack([F,paramB,paramr,inclist,prevlist,percafflist,brnlist]),columns=['Simulation','B','r','Max Incidence','Max Prevalence','Percent Affected','Basic Reproduction #'])
+print(Results)
 ### --- End Challenge 2---------------------------------------
-print(percafflist)
-print(prevlist)
-print(brnlist)
-print(inclist)
+
+
 
