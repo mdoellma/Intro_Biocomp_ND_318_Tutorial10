@@ -81,8 +81,8 @@ modelDDSim([1, 5, 100], range(0,100), [0.2], [1, 50, 100])
 
 #equations = dS/dt=-BIS dI/dt=BIS-RI dR/dt=RI
 def epiSim(y,t,B,r):
-    I=y[0]
-    S=y[1]
+    S=y[0]
+    I=y[1]
     R=y[2]
     
     dSdt=(-B*I*S)
@@ -104,13 +104,13 @@ for i in range(0,7):
     I0=1
     S0=999
     R0=0
-    y0=[I0,S0,R0]
+    y0=[S0,I0,R0]
     params=(param_df.B[i],param_df.r[i])
     t=range(0,501)
     
     #simulate model using odeint and store in dictionary
     modelSimISR=spint.odeint(epiSim,y0,t,params)
-    d["Sim{0}".format(i)]=pandas.DataFrame({'t':t,'I':modelSimISR[:,0],'S':modelSimISR[:,1],'R':modelSimISR[:,2]})
+    d["Sim{0}".format(i)]=pandas.DataFrame({'t':t,'S':modelSimISR[:,0],'I':modelSimISR[:,1],'R':modelSimISR[:,2]})
 
 #calculate maximum incidence, maximum prevalence, percent affected and basic reproduction number
 inclist=[]
@@ -130,7 +130,7 @@ for i in range(0,7):
             If=df.iloc[x,0]
             incidence=If-Ip
             C.append(incidence)
-    M=max(C)
+    M=round(max(C),3)
     inclist.append(M)
     
     D=[]
@@ -140,13 +140,13 @@ for i in range(0,7):
         R=df.iloc[y,1]
         prev=(I/(S+I+R))
         D.append(prev)
-    M=max(D)
+    M=round(max(D),3)
     prevlist.append(M)
     
     I=df.iloc[500,0]
     R=df.iloc[500,1]
     S=df.iloc[500,2]
-    percaff=((I+R)/(S+I+R))
+    percaff=round(((I+R)/(S+I+R)),3)
     percafflist.append(percaff)
     
     I=df.iloc[0,0]
@@ -154,13 +154,16 @@ for i in range(0,7):
     S=df.iloc[0,2]
     B=param_df.B[i]
     r=param_df.r[i]
-    brn=((B*(S+I+R))/r)
+    brn=round(((B*(S+I+R))/r),3)
     brnlist.append(brn)
     
 F=list(range(0,7,1))
 Results=pandas.DataFrame(numpy.column_stack([F,paramB,paramr,inclist,prevlist,percafflist,brnlist]),columns=['Simulation','B','r','Max Incidence','Max Prevalence','Percent Affected','Basic Reproduction #'])
 print(Results)
 ### --- End Challenge 2---------------------------------------
+
+
+
 
 
 
