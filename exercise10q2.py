@@ -4,14 +4,23 @@ Authors: Grant Keller and Kathleen Nicholson
 
 ## Module description
 """
-def simSIR():
+def simSIR(y,t,I,S):
     """
     Function descriptor.
     
     State: S, I, R
     Param: B
     """
-    
+    beta=y[0]
+    gamma=y[1]
+    dSdt = -beta*I*S
+    dIdt = beta*I*S - gamma*I
+    dRdt = gamma*I
+    return [dSdt,dIdt,dRdt]
+S=999
+I=1
+R=0
+time=range(0,500)
 
 if __name__ == '__main__':
     pass
