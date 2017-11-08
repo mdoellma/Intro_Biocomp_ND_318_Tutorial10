@@ -10,8 +10,8 @@ from ggplot import *
 import matplotlib.pyplot as plt
 
 #set working directory
-os.chdir('/Users/omneelay/Desktop/Exercise10/Intro_Biocomp_ND_318_Tutorial10/')
-
+#os.chdir('/Users/omneelay/Desktop/Exercise10/Intro_Biocomp_ND_318_Tutorial10/')
+os.chdir('C:\\Users\\jsh\\OneDrive\\github\\BioComp\\Intro_Biocomp_ND_318_Tutorial10\\')
 #PART 1.1
 
 def ddSim(y,t0,r,K):
