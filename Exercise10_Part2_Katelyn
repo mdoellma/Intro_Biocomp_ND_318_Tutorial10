@@ -1,0 +1,22 @@
+#load packagesundefined
+import numpy
+import pandas
+import scipy
+import scipy.integrate as spint
+from scipy.stats import norm
+from scipy.optimize import minimize
+from scipy.stats import chi2
+from plotnine import *
+
+#Write custom function for SIR model
+def SIR(y,t0,B,g): #B=beta g=gamma b/c gamma symbol looks a lot like y 
+    S=y[0]
+    I=y[1]
+    dSdt=-BIS
+    dIdt=BIS-gI
+    dRdt=gI 
+    return[dSdt,dIdt,dRdt]
+#Define parameters, initial values, and time steps
+
+    
+    
