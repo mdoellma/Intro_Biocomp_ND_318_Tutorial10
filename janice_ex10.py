@@ -9,7 +9,7 @@ import scipy
 import scipy.integrate as spint 
 from plotnine import * 
 
-def ddSim (y,t0,r,K):
+def ddSim (y,t,r,K):
   N = y[0]
   dNdt = r*(1-N/K)* N
   return [dNdt]
@@ -61,7 +61,7 @@ for i in range(0,len(K)):
   plot2df.iloc[:,i]=modelSim[:,0]
 print plot2df
 
-#Question 2 output into dataframe
+#Plot 2 output into dataframe
 plot2_output = pandas.DataFrame({"t":times, "N":modelSim2[:,0]})
 #plot output 
 ggplot (plot2_output,aes((x = "t", y = "N"))+geom_line() + theme_classic()
@@ -72,6 +72,13 @@ def ddsim2 (y, t0, r, K):
   -
   return [answer]
 
+#plot 3 
+K = 50
+r = 0.1
+N0 = [1, 50, 100]
+
+for i in range(0,len(N0)):
+  params = (N0[i],)
 #---------------------------------------------------------------------------------------------
 
 
