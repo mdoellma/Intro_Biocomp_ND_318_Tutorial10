@@ -59,7 +59,7 @@ Q1C=pandas.DataFrame({"time":times,"N1":0,"N2":0,"N3":0})
 
 for i in range(0,len(N0)):
         params=(rval,K)                                                               
-        modelSim=spint.odeint(func=ddSim,y0=N0[i],t=times,args=rval)
+        modelSim=spint.odeint(func=ddSim,y0=N0[i],t=times,args=params)
         Q1C.iloc[:,i]=modelSim[:,0]
 
 ggplot(Q1C,aes(x="time",y="N1"))+geom_line()+geom_line(aes(x="time",y="N2"),color='red')+geom_line(aes(x="time",y="N3"),color='green')+theme_classic()
