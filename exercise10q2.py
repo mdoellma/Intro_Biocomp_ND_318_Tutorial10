@@ -4,43 +4,42 @@ Authors: Grant Keller and Kathleen Nicholson
 
 ## Module description
 """
-def simSIR(y,t,I,S):
+from scipy.integrate import odeint as oi
+
+
+def simSIR(y, t0, beta, gamma):
     """
     Function descriptor.
     
     State: S, I, R
     Param: B
     """
-    beta=y[0]
-    gamma=y[1]
-    dSdt = -beta*I*S
-    dIdt = beta*I*S - gamma*I
-    dRdt = gamma*I
-    return [dSdt,dIdt,dRdt]
-S=999
-I=1
-R=0
-time=range(0,500)
+    S, I, R = y
+    dSdt = -beta * I * S
+    dIdt = beta * I * S - gamma * I
+    dRdt = gamma * I
+    return [dSdt, dIdt, dRdt]
 
 if __name__ == '__main__':
-    pass
+    S0, I0, R0 = 999, 1, 0
+    times = range(500)
+    betas = [0.0005, 0.005, 0.0001, 0.00005, 0.0001, 0.0002, 0.0001]
+    gammas = [0.05, 0.5, 0.1, 0.1, 0.05, 0.05, 0.06]
+    
+    for i, b in enumerate(betas):
+        params = (b, gammas[i])
+        sim = oi(func=simSIR, y0 = (S0, I0, R0), t=times, args=params)
+        q2a.iloc[:, i] = sim[:, 0]
+    
 
 """
-2. Often simulation models are used to develop an intuition about how a system
-works. We describe the system using some simple differential equations and then
-we try a variety of parameter values to explore how the system responds. All
-the while we are making the strong assumption that the real system we care about
-behaves somewhat like our simple model.
+2. Susceptible (S), infected (I), and resistant (R). 
 
-Let’s use a simple model of disease transmission to learn about this process!
-One simple model used for simulating disease transimission is called an SIR
-model because it considers three sub-groups of a population - susceptible (S),
-infected (I), and resistant (R). This model doesn’t actually model the disease
-causing agent at all, but rather focuses on the host of the disease. The model
-does, however, include parameters that describe the transmission of the disease
-causing agent and the rate a host recovers from the disease. The simplest SIR
-model assumes a constant population size and looks like this:
+The model does, include parameters that describe the transmission of the disease
+causing agent and the rate a host recovers from the disease.
 
+The simplest SIR model assumes a constant population size and looks like this:
+    
     dSdt = -β*I*S
     dIdt = β*I*S - γ*I
     dRdt = γ*I
