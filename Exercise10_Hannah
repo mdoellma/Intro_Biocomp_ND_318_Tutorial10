@@ -34,7 +34,7 @@ for i in range(0,len(r_values)):
 #model
 modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
 #plot data
-ggplot(Q1A,aes(x='time',y='r1'))+geom_point()+theme_classic() #how do we include all the r values?
+ggplot(Q1A,aes(x='time',y='r1'))+geom_line()+theme_classic() + geom_line(aes(y='r2'),color='red') + geom_line(aes(y='r3'),color='blue') + geom_line(aes(y='r4'),color='green') + geom_line(aes(y='r5'),color='yellow')
 
 #B - different K values
 #write custom function
@@ -59,17 +59,17 @@ for i in range(0,len(K_values)):
 #model
 modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
 #plot data
-ggplot(Q1B,aes(x='time',y='K1'))+geom_point()+theme_classic() #how do we include all the K values?
+ggplot(Q1B,aes(x='time',y='K1'))+geom_line()+theme_classic() +geom_line(aes(y='K2'),color='red') + geom_line(aes(y='K3'),color='blue') 
 
 #C - different N values
 #write custom function
 def ddSim(y,t,r,K):
-    N=1,50,100
+    N=y[0]
     dNdt=r*(1-N/K)*N
     return dNdt
 #define parameters, initial values, and time steps
 params=(0.1,50)
-#N0= something
+N0= [1,50,100]
 times=range(0,600)
 #list values we want to investigate
 N_values=[1,50,100]
@@ -77,10 +77,10 @@ N_values=[1,50,100]
 Q1C=pandas.DataFrame({'time':times,"N1":0,"N2":0,"N3":0})
 #write a for loop
 for i in range(0,len(N_values)):
-    #params=something
-    modelSim=spint.odeint(func=ddSim,y0=N[i],t=times,args=params)
-    Q1C.iloc[:,i]=sim[:,0]
-#model
-modelddSim = spint.odeint(func=ddSim,y0=N0,t=time,args=params)
+    r=0.1
+    K=50
+    params=(0.1,50)
+    modelSim=spint.odeint(func=ddSim,y0=N_values[i],t=times,args=params)
+    Q1C.iloc[:,i]=modelSim[:,0]
 #plot data
-ggplot(ddSim,aes(x='time',y='# of individuals'))+geom_point()+theme_classic()
+ggplot(Q1C,aes(x='time',y='N1'))+geom_line()+theme_classic() + geom_line(aes(y='N2'),color='red') + geom_line(aes(y='N3'),color='blue')
