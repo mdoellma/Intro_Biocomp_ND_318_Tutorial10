@@ -97,4 +97,90 @@ plot3.show()
 
 ##PART 2
 
+#define function
+def Sim2(y,t0,g,B):
+    #unpack state variables from list y
+    S=y[0]
+    I=y[1]
+    R=y[2]
+    #calculate changes in state variables
+    dSdt=-1*B*I*S
+    dIdt=(B*I*S)-(g*I)
+    dRdt=g*I
+    #return lists containing changes in state variables with time
+    return [dSdt,dIdt,dRdt]
+    
+#define parameters, initial values for state variables, and time steps
+params=(.006,.0001)
+N0=[999,1,0]
+times=range(0,500)
+
+#simulate model
+modelSim=spint.odeint(func=Sim2,y0=N0,t=times,args=params)
+modelOutput=pd.DataFrame({"t":times,"S":modelSim[:,0],"I":modelSim[:,1],"R":modelSim[:,2]})
+modelOutput    
+    
+#----------------------------------------TEST BELOW------------------------------------------------  
+    
+#define function
+def Sim2(y,t0,g,B):
+    #unpack state variables from list y
+    S=y[0]
+    I=y[1]
+    R=y[2]
+    #calculate changes in state variables
+    dSdt=-1*B*I*S
+    dIdt=(B*I*S)-(g*I)
+    dRdt=g*I
+    #return lists containing changes in state variables with time
+    return [dSdt,dIdt,dRdt]
+    
+#define parameters, initial values for state variables, and time steps
+gvalues=[.05,.5,.1,.1,.05,.05,.06]
+Bvalues=[.0005,.005,.0001,.00005,.0001,.0002,.0001]
+parameters=pd.DataFrame({"B":Bvalues,"g":gvalues})
+N0=[999,1,0]
+times=range(0,500)
+m=-1
+
+#for loop for each set of parameters and to print out results and calculate values
+for row in parameters.iterrows():
+    m=m+1
+    params=(gvalues[m],Bvalues[m])
+    
+
+    #simulate model
+    modelSim=spint.odeint(func=Sim2,y0=N0,t=times,args=params)
+    modelOutput=pd.DataFrame({"t":times,"S":modelSim[:,0],"I":modelSim[:,1],"R":modelSim[:,2]})
+
+    #calculate max incedence and prevalence
+    incidence=[0]*499
+    o=-1
+    for row in modelOutput.iterrows():
+        if o==498:
+            break
+        else:    
+            o=o+1
+            incidence[o]=modelOutput.I[o+1]-modelOutput.I[o]
+                
+    prevalence=[0]*500
+    o=-1
+    for row in modelOutput.iterrows():
+        o=o+1
+        prevalence[o]=(modelOutput.I[o])/(modelOutput.S[o]+modelOutput.I[o]+modelOutput.R[o])
+    
+    #calculate percent affected and basic reproduction number
+    percentaffected=100*(modelOutput.I[499]+modelOutput.R[499])/(modelOutput.S[499]+modelOutput.I[499]+modelOutput.R[499])
+    brr=Bvalues[m]*(modelOutput.S[499]+modelOutput.I[499]+modelOutput.R[499])/gvalues[m]
+    
+    #print results
+    print("for gamma value:",gvalues[m]," and beta value:",Bvalues[m])
+    print("     max incidence:",max(incidence))
+    print("     max prevalence:",max(prevalence))
+    print("     percent affected:",percentaffected,"%")
+    print("     basic reproduction number:",brr)
+    print("")
+    
+
+
 
