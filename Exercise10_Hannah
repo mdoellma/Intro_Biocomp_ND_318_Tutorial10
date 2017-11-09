@@ -34,7 +34,7 @@ for i in range(0,len(r_values)):
 #model
 modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
 #plot data
-ggplot(Q1A,aes(x='time',y=''))+geom_point()+theme_classic() #how do we include all the r values?
+ggplot(Q1A,aes(x='time',y='r1'))+geom_point()+theme_classic() #how do we include all the r values?
 
 #B - different K values
 #write custom function
@@ -52,13 +52,14 @@ K_values=[10,50,100]
 Q1B=pandas.DataFrame({'time':times,"K1":0,"K2":0,"K3":0})
 #write a for loop
 for i in range(0,len(K_values)):
+    r=0.2
     params=(r,K_values[i])
     modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
-    Q1B.iloc[:,i]=sim[:,0]
+    Q1B.iloc[:,i]=modelSim[:,0]
 #model
-modelddSim = spint.odeint(func=ddSim,y0=N0,t=time,args=params)
+modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
 #plot data
-ggplot(ddSim,aes(x='time',y=''))+geom_point()+theme_classic() #how do we include all the K values?
+ggplot(Q1B,aes(x='time',y='K1'))+geom_point()+theme_classic() #how do we include all the K values?
 
 #C - different N values
 #write custom function
