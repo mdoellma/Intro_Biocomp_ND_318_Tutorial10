@@ -13,7 +13,7 @@ gamma = [0.05, 0.5, 0.1, 0.1, 0.05, 0.05, 0.06]
 
 dfvar = pandas.DataFrame({"time": time, "g1":0, "g2":0, "g3":0, "g4":0, "g5":0, "g6":0, "g7":0})
 
-#for loop to read over table of values 
+#for loop to read over table of values, needs fixing  
 for i in range(0, len(betta)):
   params = (betta[i], gamma[i])
   modelSim = spint.odeint(func=SIR, t = time, args = betta)
