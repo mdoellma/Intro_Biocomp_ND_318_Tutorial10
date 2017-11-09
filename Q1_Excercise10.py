@@ -28,46 +28,38 @@ Q1A=pandas.DataFrame({"time":times,"r1":0,"r2":0,"r3":0,"r4":0,"r5":0})
 
 for i in range(0,len(rval)):
 	params=(rval[i],K)     ##at first iteration rval[i]=0, second iter rval[i]=1, etc
-	modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=rval)
-	Q1A.iloc[:,i]=modelSim[:,0]       ##we want all the rows replaced for column 0
+	modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+	Q1A.iloc[:,i]=modelSim[:,0]       ##we want all the rows replaced for columns
 
-#put model into a dataframe for plotting purposes
-modelOutput=pandas.DataFrame({"t":times,"N":modelSim[:,0]})
-
-#plot simulation output
-ggplot(modelOutput,aes(x="t",y="N"))+geom_line()+theme_classic()
+ggplot(Q1A,aes(x="time",y="r1"))+geom_line()+geom_line(aes(x="time",y="r2"),color='red')+geom_line(aes(x="time",y="r3"),color='blue')+geom_line(aes(x="time",y="r4"),color='green')+geom_line(aes(x="time",y="r5"),color='orange')+theme_classic()
 
 ##-----------------------------Plots 2-----------------------------------------
-K=(10,50,100)
+K=[10,50,100]
 N0=1
 times=range(0,600)
-rval=(0.2)
+rval=0.2
 
-Q1A=pandas.DataFrame({"time":times,"r1":0,"r2":0,"r3":0,"r4":0,"r5":0})
+Q1B=pandas.DataFrame({"time":times,"K1":0,"K2":0,"K3":0})
 
-for i in range(0,len(rval)):
-        params=(rval[i],K)    
-        modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=rval)
-        Q1A.iloc[:,i]=modelSim[:,0]
+for i in range(0,len(K)):
+        params=(rval,K[i])    
+        modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+        Q1B.iloc[:,i]=modelSim[:,0]
 
-modelOutput=pandas.DataFrame({"t":times,"N":modelSim[:,0]})
-
-ggplot(modelOutput,aes(x="t",y="N"))+geom_line()+theme_classic()
+ggplot(Q1B,aes(x="time",y="K1"))+geom_line()+geom_line(aes(x="time",y="K2"),color='red')+geom_line(aes(x="time",y="K3"),color='blue')+theme_classic()
 
 
 ##--------------------------------------Plot 3----------------------------------------
 K=50
-N0=(1,50,100)
+N0=[1,50,100]
 times=range(0,600)
-rval=(0.1)
+rval=0.1
 
-Q1A=pandas.DataFrame({"time":times,"r1":0,"r2":0,"r3":0,"r4":0,"r5":0})
+Q1C=pandas.DataFrame({"time":times,"N1":0,"N2":0,"N3":0})
 
-for i in range(0,len(rval)):
-        params=(rval[i],K)                                                               
-        modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=rval)
-        Q1A.iloc[:,i]=modelSim[:,0]
+for i in range(0,len(N0)):
+        params=(rval,K)                                                               
+        modelSim=spint.odeint(func=ddSim,y0=N0[i],t=times,args=rval)
+        Q1C.iloc[:,i]=modelSim[:,0]
 
-modelOutput=pandas.DataFrame({"t":times,"N":modelSim[:,0]})
-
-ggplot(modelOutput,aes(x="t",y="N"))+geom_line()+theme_classic()
+ggplot(Q1C,aes(x="time",y="N1"))+geom_line()+geom_line(aes(x="time",y="N2"),color='red')+geom_line(aes(x="time",y="N3"),color='green')+theme_classic()
