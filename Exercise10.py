@@ -95,32 +95,7 @@ plot2.show()
 plot3.show()
 
 
-##PART 2
-
-#define function
-def Sim2(y,t0,g,B):
-    #unpack state variables from list y
-    S=y[0]
-    I=y[1]
-    R=y[2]
-    #calculate changes in state variables
-    dSdt=-1*B*I*S
-    dIdt=(B*I*S)-(g*I)
-    dRdt=g*I
-    #return lists containing changes in state variables with time
-    return [dSdt,dIdt,dRdt]
-    
-#define parameters, initial values for state variables, and time steps
-params=(.006,.0001)
-N0=[999,1,0]
-times=range(0,500)
-
-#simulate model
-modelSim=spint.odeint(func=Sim2,y0=N0,t=times,args=params)
-modelOutput=pd.DataFrame({"t":times,"S":modelSim[:,0],"I":modelSim[:,1],"R":modelSim[:,2]})
-modelOutput    
-    
-#----------------------------------------TEST BELOW------------------------------------------------  
+#PART 2
     
 #define function
 def Sim2(y,t0,g,B):
