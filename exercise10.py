@@ -34,6 +34,25 @@ plot1=ggplot(out_df, aes(x="t", y="N1"))+geom_line()+theme_classic()+ylab("Popul
 plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), color="green")+geom_line(aes(x="t", y="N4"), color="blue")+geom_line(aes(x="t", y="N5"), color="orange")
 
 # Code for the second plot with varying carrying capacities 
+#define parameters
+
+N02=[1]
+K2=[10,50,100]
+times=range(0,100)
+
+#create dataframe to store outputs
+outdata=pandas.DataFrame({"t":times, "N1": 0, "N2": 0, "N3": 0})
+
+#simulate model with loop
+for i in range(0,len(K2)):
+    params2=(0.2,K2[i])
+    out2=spint.odeint(func=logGrowth, y0=N02, t=times, args=params2)
+    outdata.iloc[:,i]=out2[:,0]
+
+#plot output
+plot2=ggplot(outdata, aes(x="t", y="N1"))+geom_line()+theme_classic()+ylab("Population Size (N)")+xlab("Time")
+plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), color="green")
+
 
 # Code for the third plot with varying intial population sizes
 # Define parameters
