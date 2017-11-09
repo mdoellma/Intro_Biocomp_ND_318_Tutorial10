@@ -10,11 +10,11 @@ from ggplot import *
 import matplotlib.pyplot as plt
 
 #set working directory
-os.chdir('/Users/omneelay/Desktop/Exercise10/Intro_Biocomp_ND_318_Tutorial10/')
-
+#os.chdir('/Users/omneelay/Desktop/Exercise10/Intro_Biocomp_ND_318_Tutorial10/')
+os.chdir('C:\\Users\\jsh\\OneDrive\\github\\BioComp\\Intro_Biocomp_ND_318_Tutorial10\\')
 #PART 1.1
 
-def ddSim(y,t0,r,K):
+def ddSim(y,t0,r,K):#c
     # "unpack" lists containing state variables (y)
     N=y[0]
     # calculate change in state variables with time, give parameter values # and current value of state variables
@@ -49,13 +49,13 @@ plot1=ggplot(modelOutput,aes(x="t"))+geom_line(aes(y="N1"), color='blue')+geom_l
 Kvalues=[10,50,100]
 z=0
 times=range(0,100)
-N0=[1]
+N0=[1] #initial value
 columns=["t", "N1", "N2", "N3"]
 modelOutput=pd.DataFrame(columns=columns)
 modelOutput.t=times
 
 for i in Kvalues:
-    params=(0.2,i)
+    params=(0.2,i) #parameter/k value
     z=z+1
 
     ### Simulate the model using odeint
