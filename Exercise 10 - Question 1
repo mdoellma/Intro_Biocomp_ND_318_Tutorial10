@@ -1,0 +1,29 @@
+# load packages
+import numpy
+import pandas
+from plotnine import *
+
+# custom function
+ddSim
+def ddSim(y,t,r,K)
+    N=y[0]
+    dydt==r*N(1-(N/K))
+    return dydt
+NO=[10]
+times=range(0,600)
+K=100
+rs=[-0.1,0.1,0.4,0.8,1]
+Q1A=pandas.DataFrame({"time":times,})
+sim=odeint(func=ddSim,y0=NO,t=times,args=params)
+
+# define init val(N), time steps, param (K) K=100
+# list of r-vals
+    # rs[0] rs[1] ... rs[4]
+    # rs=[-0.1,0.1,0.4,0.8,1]
+# make DF store results
+    # QIA=
+# for loop
+    # for i in range(0,len(rs)):
+        # params=(rs[i],K)
+        # sim=spint.odeint(func=ddSim,y0=NO,t=times,args=params)
+        # QIA.iloc[:,i]=sim[:,0]
