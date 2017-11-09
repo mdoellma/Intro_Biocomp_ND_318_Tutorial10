@@ -15,9 +15,10 @@ from plotnine import *
 def ddSim(y,t,r,K):
     N=y[0]
     dNdt=r*(1-N/K)*N
-    return dNdt
+    return [dNdt]
 #define parameters, initial values, and time steps
 params=(100) #do we just put in the K parameter here?
+K=100
 N0=[10]
 times=range(0,600)
 #list of values we want to investigate
@@ -62,7 +63,7 @@ ggplot(ddSim,aes(x='time',y=''))+geom_point()+theme_classic() #how do we include
 #C - different N values
 #write custom function
 def ddSim(y,t,r,K):
-    #N= something
+    N=1,50,100
     dNdt=r*(1-N/K)*N
     return dNdt
 #define parameters, initial values, and time steps
@@ -76,7 +77,7 @@ Q1C=pandas.DataFrame({'time':times,"N1":0,"N2":0,"N3":0})
 #write a for loop
 for i in range(0,len(N_values)):
     #params=something
-    modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+    modelSim=spint.odeint(func=ddSim,y0=N[i],t=times,args=params)
     Q1C.iloc[:,i]=sim[:,0]
 #model
 modelddSim = spint.odeint(func=ddSim,y0=N0,t=time,args=params)
