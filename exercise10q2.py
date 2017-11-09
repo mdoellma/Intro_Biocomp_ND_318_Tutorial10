@@ -5,7 +5,7 @@ Authors: Grant Keller and Kathleen Nicholson
 ## Module description
 """
 from scipy.integrate import odeint as oi
-
+import pandas
 
 def simSIR(y, t0, beta, gamma):
     """
@@ -25,25 +25,21 @@ if __name__ == '__main__':
     times = range(500)
     betas = [0.0005, 0.005, 0.0001, 0.00005, 0.0001, 0.0002, 0.0001]
     gammas = [0.05, 0.5, 0.1, 0.1, 0.05, 0.05, 0.06]
-    
+    q2df = pandas.DataFrame({"times" : times, "S1" : 0, "I1" : 0, "R1": 0,
+                             "S2" : 0, "I2" : 0, "R2": 0,"S3" : 0, "I3" : 0, "R3": 0,
+                             "S4" : 0, "I4" : 0, "R4": 0,"S5" : 0, "I5" : 0, "R5": 0,
+                             "S6" : 0, "I6" : 0, "R6": 0,"S7" : 0, "I7" : 0, "R7": 0})
+
     for i, b in enumerate(betas):
         params = (b, gammas[i])
         sim = oi(func=simSIR, y0 = (S0, I0, R0), t=times, args=params)
-        q2a.iloc[:, i] = sim[:, 0]
-    
+        q2df.iloc[:, i+14] = sim[:, 0] # assigns S values to S#i
+        q2df.iloc[:, i] = sim[:, 1] # assigns I values to I#i
+        q2df.iloc[:, i+7] = sim[:, 2] # assigns R values to R#i
 
 """
 2. Susceptible (S), infected (I), and resistant (R). 
 
-The model does, include parameters that describe the transmission of the disease
-causing agent and the rate a host recovers from the disease.
-
-The simplest SIR model assumes a constant population size and looks like this:
-    
-    dSdt = -β*I*S
-    dIdt = β*I*S - γ*I
-    dRdt = γ*I
-    
 When considering dynamics of a disease epidemic we can quantify:
 • incidence - the number of new infections occurring over a defined time
 interval (It − It−1) 
@@ -56,10 +52,6 @@ during an epidemic ( (I+R)/(S+I+R) )
 
 • basic reproduction number ( R0 = β(S+I+R)/γ ) - the number of cases one case
 generates on average over its infectious period in an otherwise uninfected population
-
-Write a custom function describing the SIR model above, and for each row in the
-table below, use the pair of parameter values (β and γ) to simulate the model
-for 500 days. 
 
 Start each simulation with 999 susceptible, 1 infected, and 0 resistant
 individuals. For each simulation, calculate the maximum daily incidence and
