@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 #set working directory
 #os.chdir('/Users/omneelay/Desktop/Exercise10/Intro_Biocomp_ND_318_Tutorial10/')
-#os.chdir('C:\\Users\\jsh\\OneDrive\\github\\BioComp\\Intro_Biocomp_ND_318_Tutorial10\\')
+os.chdir('C:\\Users\\jsh\\OneDrive\\github\\BioComp\\Intro_Biocomp_ND_318_Tutorial10\\')
 #PART 1.1
 
 def ddSim(y,t0,r,K):#c
@@ -111,8 +111,10 @@ def Sim2(y,t0,g,B):
     return [dSdt,dIdt,dRdt]
     
 #define parameters, initial values for state variables, and time steps
-gvalues=[.05,.5,.1,.1,.05,.05,.06]
-Bvalues=[.0005,.005,.0001,.00005,.0001,.0002,.0001]
+gvalues=[.05,.5,.1,.1,.05,.05,.06] #original g values
+#gvalues=[.05,.5,2,.1,.05,37,.06] #testing different parameters
+Bvalues=[.0005,.005,.0001,.00005,.0001,.0002,.0001] #original values
+#Bvalues=[.0005,.005,1,5,.0001,.0002,.0001] #testing different parameters
 parameters=pd.DataFrame({"B":Bvalues,"g":gvalues})
 N0=[999,1,0]
 times=range(0,500)
@@ -150,13 +152,18 @@ for row in parameters.iterrows():
     
     #print results
     print("for gamma value:",gvalues[m]," and beta value:",Bvalues[m])
-    print("     max incidence:",max(incidence))
-    print("     max prevalence:",max(prevalence))
-    print("     percent affected:",percentaffected,"%")
-    print("     basic reproduction number:",brr)
+    print("    the max incidence is:",max(incidence))
+    print("    the max prevalence is:",max(prevalence))
+    print("    the percent affected is:",percentaffected,"%")
+    print("    the basic reproduction number is:",brr)
     print("")
     
 
 
 
 #What we learned:
+#-increases  the gamma value appears to have a inverse-corelation with the 4 calculated values
+#-increase the beta values appears to have a direct correlation with the 4 calculated values. Increase beta directly increase the spread of the disease. 
+#This seems logical, as the beta parameter represents the number contacts per unit of time, making new infections. While gamma actually represents the mean infectious period. The basic reproduction value is beta/gamma. 
+#Thus, based on this equation, the most important factor in a disease spread may be these two values. A disease that spreads frequently/quick and is present in the individual for a long period of time, would increase the max incidence, prevalaence, and total percent affected. 
+#-The above code used to determine this, is # out below the original gamma and beta values. 
