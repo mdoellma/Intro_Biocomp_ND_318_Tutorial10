@@ -33,7 +33,7 @@ for i in range(0,len(r_values)):
 #model
 modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
 #plot data
-ggplot(Q1A,aes(x='time',y='#r_values'))+geom_point()+theme_classic()
+ggplot(Q1A,aes(x='time',y=''))+geom_point()+theme_classic() #how do we include all the r values?
 
 #B - different K values
 #write custom function
@@ -57,7 +57,7 @@ for i in range(0,len(K_values)):
 #model
 modelddSim = spint.odeint(func=ddSim,y0=N0,t=time,args=params)
 #plot data
-ggplot(ddSim,aes(x='time',y='# of individuals'))+geom_point()+theme_classic()
+ggplot(ddSim,aes(x='time',y=''))+geom_point()+theme_classic() #how do we include all the K values?
 
 #C - different N values
 #write custom function
