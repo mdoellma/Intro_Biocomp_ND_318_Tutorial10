@@ -8,5 +8,10 @@ populations they each reach their own respective populations. The Third
 plot shows that your population always reaches the carrying capacity 
 despite where you started (e.g. higher you go down, lower you go up.)
 
-The second set of graphs in the SIR model show how dynamics of susceptible, infected, and recovered populations differ between values 
-of beta (infection rate) and gamma (recovery rate). When gamma is large small, the disease goes extinct very fast and the whole population is recovered. When gamma is smaller compared to the beta, the disease persists longer but eventually goes extinct. The population reaches an equilibrium between those that are still susceptible and those that have recovered.
+The second set of graphs in the SIR model show how dynamics of susceptible, 
+infected, and recovered populations differ between values of beta (infection 
+rate) and gamma (recovery rate). When gamma is large small, the disease goes 
+extinct very fast and the whole population is recovered. When gamma is 
+smaller compared to the beta, the disease persists longer but eventually 
+goes extinct. The population reaches an equilibrium between those that are 
+still susceptible and those that have recovered.
