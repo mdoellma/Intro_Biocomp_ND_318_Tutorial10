@@ -81,5 +81,5 @@ Q2=pandas.DataFrame({"betta":betta,"gamma":gamma,"Incidence":0,"prevalence":0,"p
 
 
 Q2.R0 = (Q2.betta * 1000)/ Q2.gamma
-print Q2.R0 
+print ("basic reproduction number:",Q2.R0 )
 
