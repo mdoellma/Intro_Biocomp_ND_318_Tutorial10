@@ -8,7 +8,7 @@ from scipy.optimize import minimize
 from scipy.stats import chi2
 from plotnine import *
 #Beta and gamma values
-B_values = [0.0005,0.005,0.0001,0.00005,0.0001,0.0002,0.0001]
+B_values = [0.05,0.5,0.1,0.1,0.05,0.05,0.06]
 g_values = [0.05,0.5,0.1,0.1,0.05,0.05,0.06]
 #Write custom function for SIR model
 def SIR(y,t0,B,g): #B=beta g=gamma b/c gamma symbol looks a lot like y 
@@ -39,13 +39,3 @@ for i in range(0,len(B_values)): #can use B b/c gamma list is same length
     DataOut.iloc[i,4]=B_values[i]
     DataOut.iloc[i,5]=g_values[i]
 print(DataOut)
-
-
-   
-
-
-    
-
-
-    
-    
