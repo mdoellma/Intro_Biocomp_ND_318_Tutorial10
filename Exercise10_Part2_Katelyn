@@ -1,0 +1,51 @@
+#load packagesundefined
+import numpy
+import pandas
+import scipy
+import scipy.integrate as spint
+from scipy.stats import norm
+from scipy.optimize import minimize
+from scipy.stats import chi2
+from plotnine import *
+#Beta and gamma values
+B_values = [0.0005,0.005,0.0001,0.00005,0.0001,0.0002,0.0001]
+g_values = [0.05,0.5,0.1,0.1,0.05,0.05,0.06]
+#Write custom function for SIR model
+def SIR(y,t0,B,g): #B=beta g=gamma b/c gamma symbol looks a lot like y 
+    S=y[0]
+    I=y[1]
+    dSdt=-B*I*S
+    dIdt=B*I*S-g*I
+    dRdt=g*I 
+    return[dSdt,dIdt,dRdt]
+#Make dataframe
+DataOut = pandas.DataFrame(numpy.zeros([7,6]),columns=['MaxIncidence','MaxPrevalance','PercentAffected','R0','Beta','Gamma'])
+#Define parameters, initial values, and time steps
+times=range(0,500) #exclusive of last value
+#for loop to loop through beta and gamma values
+for i in range(0,len(B_values)): #can use B b/c gamma list is same length
+    params=(B_values[i],g_values[i])
+    sim=spint.odeint(func=SIR,y0=[999,1,0],t=times,args=params)
+    inc=sim[1:500,1]-sim[0:499,1] #take "I" column but skip the first row (It) and subtract "I" column but skip the last row (It-1)
+    maxinc=numpy.max(inc)
+    prev=sim[:,1]/(sim[:,0]+sim[:,1]+sim[:,2]) #I/(S+I+R)
+    maxprev=numpy.max(prev)
+    affected=(sim[499,1]+sim[499,2])/(sim[499,0]+sim[499,1]+sim[499,2]) #(I+R)/(S+I+R)
+    R0=(B_values[i]*1000)/g_values[i] #B(S+I+R)/g
+    DataOut.iloc[i,0]=maxinc
+    DataOut.iloc[i,1]=maxprev
+    DataOut.iloc[i,2]=affected
+    DataOut.iloc[i,3]=R0
+    DataOut.iloc[i,4]=B_values[i]
+    DataOut.iloc[i,5]=g_values[i]
+print(DataOut)
+
+
+   
+
+
+    
+
+
+    
+    

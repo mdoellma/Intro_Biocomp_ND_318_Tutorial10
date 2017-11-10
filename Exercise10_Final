@@ -1,0 +1,129 @@
+#Problem 1 - Hannah
+
+#load packages
+import numpy
+import pandas
+import scipy
+import scipy.integrate as spint
+from scipy.stats import norm
+from scipy.optimize import minimize
+from scipy.stats import chi2
+from plotnine import *
+
+#A - different r values
+#write custom function
+def ddSim(y,t,r,K):
+    N=y[0]
+    dNdt=r*(1-N/K)*N
+    return [dNdt]
+#define parameters, initial values, and time steps
+params=(100) #do we just put in the K parameter here?
+K=100
+N0=[10]
+times=range(0,600)
+#list of values we want to investigate
+r_values=[-0.1,0.1,0.4,0.8,1.0]
+#make a dataframe
+Q1A=pandas.DataFrame({'time':times,"r1":0,"r2":0,"r3":0,"r4":0,"r5":0})
+#write a for loop    
+for i in range(0,len(r_values)):
+    K=100
+    params=(r_values[i],K)
+    modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=params) #can say args=params because we defined it in our for loop
+    Q1A.iloc[:,i]=modelSim[:,0]
+#model
+modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+#plot data
+ggplot(Q1A,aes(x='time',y='r1'))+geom_line()+theme_classic() + geom_line(aes(y='r2'),color='red') + geom_line(aes(y='r3'),color='blue') + geom_line(aes(y='r4'),color='green') + geom_line(aes(y='r5'),color='yellow')
+
+#B - different K values
+#write custom function
+def ddSim(y,t,r,K):
+    N=y[0]
+    dNdt=r*(1-N/K)*N
+    return dNdt
+#define parameters, initial values, and time steps
+params=(0.2) #do we just put in the r parameter here?
+N0=[1]
+times=range(0,600)
+#list values we want to investigate
+K_values=[10,50,100]
+#make a dataframe
+Q1B=pandas.DataFrame({'time':times,"K1":0,"K2":0,"K3":0})
+#write a for loop
+for i in range(0,len(K_values)):
+    r=0.2
+    params=(r,K_values[i])
+    modelSim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+    Q1B.iloc[:,i]=modelSim[:,0]
+#model
+modelddSim = spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+#plot data
+ggplot(Q1B,aes(x='time',y='K1'))+geom_line()+theme_classic() +geom_line(aes(y='K2'),color='red') + geom_line(aes(y='K3'),color='blue') 
+
+#C - different N values
+#write custom function
+def ddSim(y,t,r,K):
+    N=y[0]
+    dNdt=r*(1-N/K)*N
+    return dNdt
+#define parameters, initial values, and time steps
+params=(0.1,50)
+N0= [1,50,100]
+times=range(0,600)
+#list values we want to investigate
+N_values=[1,50,100]
+#make a dataframe
+Q1C=pandas.DataFrame({'time':times,"N1":0,"N2":0,"N3":0})
+#write a for loop
+for i in range(0,len(N_values)):
+    r=0.1
+    K=50
+    params=(0.1,50)
+    modelSim=spint.odeint(func=ddSim,y0=N_values[i],t=times,args=params)
+    Q1C.iloc[:,i]=modelSim[:,0]
+#plot data
+ggplot(Q1C,aes(x='time',y='N1'))+geom_line()+theme_classic() + geom_line(aes(y='N2'),color='red') + geom_line(aes(y='N3'),color='blue')
+
+#Part 2 
+#load packagesundefined
+import numpy
+import pandas
+import scipy
+import scipy.integrate as spint
+from scipy.stats import norm
+from scipy.optimize import minimize
+from scipy.stats import chi2
+from plotnine import *
+#Beta and gamma values
+B_values = [0.0005,0.005,0.0001,0.00005,0.0001,0.0002,0.0001]
+g_values = [0.05,0.5,0.1,0.1,0.05,0.05,0.06]
+#Write custom function for SIR model
+def SIR(y,t0,B,g): #B=beta g=gamma b/c gamma symbol looks a lot like y 
+    S=y[0]
+    I=y[1]
+    dSdt=-B*I*S
+    dIdt=B*I*S-g*I
+    dRdt=g*I 
+    return[dSdt,dIdt,dRdt]
+#Make dataframe
+DataOut = pandas.DataFrame(numpy.zeros([7,6]),columns=['MaxIncidence','MaxPrevalance','PercentAffected','R0','Beta','Gamma'])
+#Define parameters, initial values, and time steps
+times=range(0,500) #exclusive of last value
+#for loop to loop through beta and gamma values
+for i in range(0,len(B_values)): #can use B b/c gamma list is same length
+    params=(B_values[i],g_values[i])
+    sim=spint.odeint(func=SIR,y0=[999,1,0],t=times,args=params)
+    inc=sim[1:500,1]-sim[0:499,1] #take "I" column but skip the first row (It) and subtract "I" column but skip the last row (It-1)
+    maxinc=numpy.max(inc)
+    prev=sim[:,1]/(sim[:,0]+sim[:,1]+sim[:,2]) #I/(S+I+R)
+    maxprev=numpy.max(prev)
+    affected=(sim[499,1]+sim[499,2])/(sim[499,0]+sim[499,1]+sim[499,2]) #(I+R)/(S+I+R)
+    R0=(B_values[i]*1000)/g_values[i] #B(S+I+R)/g
+    DataOut.iloc[i,0]=maxinc
+    DataOut.iloc[i,1]=maxprev
+    DataOut.iloc[i,2]=affected
+    DataOut.iloc[i,3]=R0
+    DataOut.iloc[i,4]=B_values[i]
+    DataOut.iloc[i,5]=g_values[i]
+print(DataOut)
