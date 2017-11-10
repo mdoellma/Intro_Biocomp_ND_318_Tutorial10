@@ -72,10 +72,12 @@ def SIRmodel(y, t0, beta, gamma):
 ### Simulate output with different betas and gammas, create plots, and calculate disease metrics 
 times=range(0,500) #run simulation for 500 days
 N0=[999, 1, 0] #initial values = 999 susceptible, 1 infected, and 0 resistent
+
 # Create lists to loop over 
 betas=[0.0005, 0.005, 0.0001, 0.00005, 0.0001, 0.0002, 0.0001]
 gammas=[0.05, 0.5, 0.1, 0.1, 0.05, 0.05, 0.06]
 plotnames=["Parameters 1", "Parameters 2","Parameters 3","Parameters 4","Parameters 5","Parameters 6", "Parameters 7"] 
+
 # Create a list to store plots 
 plots=["Plot1", "Plot2","Plot3","Plot4","Plot5","Plot6","Plot7"] 
 # Create a dataframe to store disease metric calculations
