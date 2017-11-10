@@ -46,7 +46,7 @@ print Q1A
 modelOutput=pandas.DataFrame({"t":times,"N":modelSim[:,0]})
 
 #plot simulation output
-ggplot (modelOutput,aes((x="t",y="N"))+geom_line()+theme_classic()
+ggplot (Q1A, aes(x = "time", y = "r1")) + geom_line() +geom_line(aes(x="time", y = "r2"), color = 'red')+geom_line(aes(x="time", y="r3"), color = "yellow")+geom_line(aes(x = "time", y = "r3"), color = "green") + geom_line(aes(x="time", y = "r4"), color = "orange") + geom_line(aes(x="time", y = "r5"), color = "purple")+ theme_classic()
 
 
 #plot 2: 
@@ -56,29 +56,31 @@ N0 = 1
 
 plot2df = pandas.DataFrame({"time":times, "K1":0, "K2":0, "K3":0})
 for i in range(0,len(K)):
-  params = (K[i],r)
-  modelSim2 = spint.odeint(func=ddSim, y0=N0, t = times, args = params)
+  params = (r, K[i])
+  modelSim = spint.odeint(func=ddSim, y0=N0, t = times, args = params)
   plot2df.iloc[:,i]=modelSim[:,0]
 print plot2df
 
 #Plot 2 output into dataframe
 plot2_output = pandas.DataFrame({"t":times, "N":modelSim2[:,0]})
 #plot output 
-ggplot (plot2_output,aes((x = "t", y = "N"))+geom_line() + theme_classic()
+ggplot (plot2df,aes(x = "time", y = "K1"))+geom_line() + geom_line(aes(x="time", y = "K2"), color = "red")+geom_line(aes(x="time", y = "K3"), color = "purple") + theme_classic()
 
-
-def ddsim2 (y, t0, r, K):
-  -
-  -
-  return [answer]
 
 #plot 3 
 K = 50
 r = 0.1
 N0 = [1, 50, 100]
 
+plot3df = pandas.DataFrame({"time":times, "N1":0, "N2":0, "N3":0})
 for i in range(0,len(N0)):
-  params = (N0[i],)
+  params = (r,K)
+  modelSim = spint.odeint(func=ddSim, y0=N0[i], t = times, args = params)
+  plot3df.iloc[:,i]=modelSim[:,0]
+print plot3df
+
+plot3_output = pandas.DataFrame({"t":times, "N":modelSim[:,0]})
+ggplot(plot3df,aes(x="time", y = "N1"))+geom_line() + geom_line(aes(x="time", y = "N2"), color = "red")+geom_line(aes(x="time", y = "N3"), color = "orange")
 #---------------------------------------------------------------------------------------------
 
 
