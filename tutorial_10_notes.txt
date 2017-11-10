@@ -1,0 +1,41 @@
+SIMULATION MODEL CODE
+
+variables - the order matters
+	state variables - must unput as a list, where the order matters
+	t must be second
+	parameters come third (r, K)
+	
+definine parameters as a touple - using (), not []
+
+1. growth rate
+	only need one function
+	input different values into the function
+	use a for loop to run model for a list of parameter values
+	
+2. epidemiological model
+	three different state variables - I,S,R
+	beta and gamma are parameters
+	need three different custom functions???
+	calculate a series of values
+		basic reproduction only uses initial values
+		max incidence - use the max function in numpy
+		percent affected = (I+R)/(S+I+R)
+	the sum of the three state variables is constant - the number of people in the population
+	
+Problem 1
+	pseudocode
+		load packages
+		write custom function
+		define initial values (N), state variables, time steps, parameters (K)
+		list of r-values that you want to investigate
+			rs = [-0.1, 0.1, 0.4, 0.8, 1]
+		make df store results
+			column for time, column for r-values
+			storage=pandas.DataFrame({"time":times,"r1":0,"r2":0,"r3":0,"r4":0,"r5":0})
+		for loop
+			for i in range(0,len(rs)):
+				params=(rs[i],K)
+				Sim=spint.odeint(func=ddSim,y0=N0,t=times,args=params)
+				storage.iloc[:,i]=sim[:,0]
+				
+

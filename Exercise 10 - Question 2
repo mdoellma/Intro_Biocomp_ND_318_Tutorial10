@@ -1,0 +1,31 @@
+import numpy
+import pandas
+import scipy.integrate as spint
+from plotnine import *
+
+def SSim(y,t,B,g):
+    S=y[0]
+    I=y[1]
+    R=y[2]
+    dSdt = -B*I*S
+    dIdt = (B*I*S) - (g*I)
+    dRdt = g*I
+    return [dSdt, dIdt, dRdt]
+	
+S0 = 999
+I0 = 1
+R0 = 0
+times=range(0,500)
+B=[0.0005,0.005,0.0001,0.00005,0.0001,0.0002,0.0001]
+g=[0.05,0.5,0.1,0.1,0.05,0.05,0.06]
+
+Q2=pandas.DataFrame({"beta":B,"gamma":g,"incidence":0,"prevalence":0,"percent_affected":0,"reproduction_number":0})
+for i in range(0,len(B)):
+    params=(B[i],g[i])
+    print(i)
+    sim=spint.odeint(func=SSim,y0=[S0,I0,R0],t=times,args=params)
+    Q2.iloc[i,2] = numpy.max(sim[1:499,1]-sim[0:498,1])
+    Q2.iloc[i,3] = numpy.max(sim[:,1]/(sim[:,0]+sim[:,1]+sim[:,2]))
+    Q2.iloc[i,4] = (sim[499,1]+sim[499,2])/(sim[499,0]+sim[499,1]+sim[499,2])
+    Q2.iloc[i,5] = B[i]*(sim[0,0]+sim[0,1]+sim[0,2])/g[i]
+
