@@ -67,7 +67,7 @@ print ("The maximum prevalence is", max(prev))
 ##calc max daily incidence
 incid = [0]*499
 z = -1 
-for row in SIRdf.iterrows(): #needs to be fixed 
+for row in SIRdf.iterrows(): 
     if z == 498:
         break
     else:
