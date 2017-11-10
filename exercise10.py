@@ -51,7 +51,7 @@ for i in range(0,len(K2)):
 
 #plot output
 plot2=ggplot(outdata, aes(x="t", y="N1"))+geom_line()+theme_classic()+ylab("Population Size (N)")+xlab("Time")
-plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), color="green")
+plot2+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), color="green")
 
 
 # Code for the third plot with varying intial population sizes
