@@ -6,6 +6,7 @@ Authors: Grant Keller and Kathleen Nicholson
 """
 from scipy.integrate import odeint as oi
 import pandas
+from time import sleep
 
 def simSIR(y, t0, beta, gamma):
     """
@@ -30,44 +31,40 @@ if __name__ == '__main__':
                              "S4" : 0, "I4" : 0, "R4": 0,"S5" : 0, "I5" : 0, "R5": 0,
                              "S6" : 0, "I6" : 0, "R6": 0,"S7" : 0, "I7" : 0, "R7": 0})
 
+    
     for i, b in enumerate(betas):
         params = (b, gammas[i])
         sim = oi(func=simSIR, y0 = (S0, I0, R0), t=times, args=params)
         q2df.iloc[:, i+14] = sim[:, 0] # assigns S values to S#i
         q2df.iloc[:, i] = sim[:, 1] # assigns I values to I#i
         q2df.iloc[:, i+7] = sim[:, 2] # assigns R values to R#i
+    
+    max_incidence = [] # It - It-1
+    max_prevalence = [] # I / (S + I + R)
+    percent_affected = [(q2df["I%s"%i][499] + q2df["R%s"%i][499]) / 
+                        (q2df["S%s"%i][499] + q2df["I%s"%i][499] + q2df["R%s"%i][499])
+                        for i in range(1,8)] # (I + R) / (S + I + R)
+    # beta * (S + I + R) / gamma
+    basic_reproduction = [betas[i] * (S0 + I0 + R0) / gammas[i] for i in range(7)]
+    
+    for i in range(1, 8):
+        daily_incidence = [q2df["I%s"%i][j] - q2df["I%s"%i][j-1] for j in range(1, 500)]
+        daily_prevalence = [q2df["I%s"%i][j] / ( q2df["S%s"%i][j] + q2df["I%s"%i][j] + 
+                            q2df["R%s"%i][j]) for j in range(500)]
+        max_incidence.append(max(daily_incidence))
+        max_prevalence.append(max(daily_prevalence))
+    
+    for i in range(7):
+        print "Case {0}, beta = {1}, gamma = {2}:".format(i+1, betas[i], gammas[i])
+        print "Basic reproduction rate: %s"%basic_reproduction[i]
+        print "Percent affected by end of simulation: %s"%percent_affected[i]
+        print "Maximum incidence, highest # of subsequent infections per case: %s"%max_incidence[i]
+        print "Maximum prevalence, max % population affected at any time: %s"%max_prevalence[i]
+        sleep(10)
+        print "\n\n"
 
 """
-2. Susceptible (S), infected (I), and resistant (R). 
-
-When considering dynamics of a disease epidemic we can quantify:
-• incidence - the number of new infections occurring over a defined time
-interval (It − It−1) 
-
-• prevalence - the fraction of the population that is infected at a given
-time ( I/(S+I+R) )
-
-• percent affected - the fraction of the population that was sick at any time
-during an epidemic ( (I+R)/(S+I+R) )
-
-• basic reproduction number ( R0 = β(S+I+R)/γ ) - the number of cases one case
-generates on average over its infectious period in an otherwise uninfected population
-
-Start each simulation with 999 susceptible, 1 infected, and 0 resistant
-individuals. For each simulation, calculate the maximum daily incidence and
-maximum daily prevalence. Also calculate the percent affected over the
-simulation (use the last time step of the simulation for this) and the basic
-reproduction number (you can actually do this without simulating, since we
-give you β, γ, and the initial S + I + R.
-
-    β    γ
-0.0005 0.05
-0.005 0.5
-0.0001 0.1
-0.00005 0.1
-0.0001 0.05
-0.0002 0.05
-0.0001 0.06
+2.
 
 What patterns do you see in these results? Try additional parameter combinations
 to identify key values of or trends with β, γ, or R0 (the basic reproduction
