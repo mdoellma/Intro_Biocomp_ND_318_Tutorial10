@@ -9,6 +9,7 @@ from scipy.stats import norm
 from scipy.stats import chi2
 from plotnine import* 
 
+#-----------variables---------------------------------------------------
 susceptible = [999]
 infected = [1]
 resistant = [0] 
@@ -19,12 +20,7 @@ time = range(0, 500)
 betta = [0.0005, 0.005, 0.001, 0.00005, 0.0001, 0.0002, 0.0001]
 gamma = [0.05, 0.5, 0.1, 0.1, 0.05, 0.05, 0.06]
 
-
-#calc max daily incidence
-#calc max daily prevalence 
-#calc % affected over the simulation 
-
-
+#-----------function-------------------------------------------
 def SIR(y, t, betta, gamma ):
   susceptible = y[0]
   infected = y[1]
@@ -36,6 +32,7 @@ def SIR(y, t, betta, gamma ):
   
   return [dSdt, dIdt, dRdt]
 
+#--------------------data handling--------------------------------------------
 #df for values   
 SIRdf = pandas.DataFrame({"time":time, "S":0, "I":0, "R":0})
 cols = ["S", "I", "R", "time"]
@@ -53,11 +50,12 @@ Q2plot = Q2plot + geom_line(aes(x = "time", y = "I"),  color = "red") #infected
 Q2plot = Q2plot +geom_line(aes(x="time", y = "R" ), color = "blue") #resistant 
 print Q2plot
 
-#percent affected 
+#----------analyzing data from simulation-------------------------------------------------
+#calc % affected over the simulation
 perAff = (SIRdf.I[499] + SIRdf.R[499]) / (SIRdf.S[499]+SIRdf.I[499] + SIRdf.R[499])
 print ('Percent affected is:', perAff*100)
 
-#prevalence 
+#calc max daily prevalence 
 prev = [0]*500
 z = -1 
 for row in SIRdf.iterrows():
@@ -65,13 +63,17 @@ for row in SIRdf.iterrows():
     prev[z] = ((SIRdf.I[z]) / (SIRdf.S[z] + SIRdf.I[z] + SIRdf.R[z]))
 
 print ("The maximum prevalence is", max(prev))
-#incidence
-incid = [0]*500
+
+##calc max daily incidence
+incid = [0]*499
 z = -1 
 for row in SIRdf.iterrows(): #needs to be fixed 
-    z = z + 1
-    incid[z] = ((SIRdf.I[z] - SIRdf.I[z-1]
-
+    if z == 498:
+        break
+    else:
+        z = z + 1
+        incid[z]=SIRdf.I[z+1]-SIRdf.I[z]
+print "The maximum daily incidence is: ", max(incid)
 
 #calc basic reproduction number---------------------------- 
 R0 = (betta *(S + I + R))/gamma 
