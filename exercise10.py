@@ -38,7 +38,7 @@ plot1+geom_line(aes(x="t", y="N2"), color="red")+geom_line(aes(x="t", y="N3"), c
 
 N02=[1]
 K2=[10,50,100]
-times=range(0,100)
+times=range(0,175)
 
 #create dataframe to store outputs
 outdata=pandas.DataFrame({"t":times, "N1": 0, "N2": 0, "N3": 0})
