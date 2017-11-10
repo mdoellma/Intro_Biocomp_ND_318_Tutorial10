@@ -4,6 +4,7 @@ import scipy
 import scipy.integrate as spint
 from plotnine import *
 
+
 def epiSim(y,t,B,r):
     S=y[0]
     I=y[1]
@@ -16,8 +17,8 @@ def epiSim(y,t,B,r):
     return[dSdt,dIdt,dRdt]
 
 #put list of B and R parameters into dataframe
-paramB=[0.05,0.1,0.05,0.1]
-paramr=[0.05,0.05,0.1,0.1]
+paramB=[0.000001,0.1,0.05,0.1]
+paramr=[0.001,0.05,0.1,0.1]
 param_array=numpy.column_stack([paramB,paramr])
 param_df=pandas.DataFrame(param_array,columns=['B','r'])
 
@@ -35,6 +36,13 @@ for i in range(0,4):
     #simulate model using odeint and store in dictionary
     modelSimISR=spint.odeint(epiSim,y0,t,params)
     d["Sim{0}".format(i)]=pandas.DataFrame({'t':t,'S':modelSimISR[:,0],'I':modelSimISR[:,1],'R':modelSimISR[:,2]})
+
+ggplot(data=d["Sim0"]) + geom_line(aes(x="t", y="I"), color="red") + geom_line(aes(x="t", y="S"), color="blue") + geom_line(aes(x="t", y="R"), color="green")
+
+
+ggplot(data=d["Sim1"]) + geom_line(aes(x="t", y="I"), color="red") + geom_line(aes(x="t", y="S"), color="blue") + geom_line(aes(x="t", y="R"), color="green")
+ggplot(data=d["Sim2"]) + geom_line(aes(x="t", y="I"), color="red") + geom_line(aes(x="t", y="S"), color="blue") + geom_line(aes(x="t", y="R"), color="green")
+ggplot(data=d["Sim3"]) + geom_line(aes(x="t", y="I"), color="red") + geom_line(aes(x="t", y="S"), color="blue") + geom_line(aes(x="t", y="R"), color="green")
 
 #calculate maximum incidence, maximum prevalence, percent affected and basic reproduction number
 inclist=[]
@@ -82,5 +90,8 @@ for i in range(0,4):
     brnlist.append(brn)
     
 F=list(range(0,4,1))
+
 Results=pandas.DataFrame(numpy.column_stack([F,paramB,paramr,inclist,prevlist,percafflist,brnlist]),columns=['Simulation','B','r','Max Incidence','Max Prevalence','Percent Affected','Basic Reproduction #'])
 print(Results)
+
+
